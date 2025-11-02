@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS风格卡密验证系统</title>
+    <style>
+        /* 样式保持不变，这里省略以节省空间 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            background-color: #f2f2f7;
+            color: #000;
+            padding-top: 120px;
+            padding-bottom: 40px;
+            min-height: 100vh;
+        }
+        
+        .dynamic-island {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 40px;
+            background-color: #000;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        
+        .dynamic-island:hover {
+            width: 160px;
+        }
+        
+        .dynamic-island.expanded {
+            width: 340px;
+            height: 500px;
+            border-radius: 24px;
+            padding: 20px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .time-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .debug-panel {
+            display: none;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .dynamic-island.expanded .debug-panel {
+            display: block;
+        }
+        
+        .dynamic-island.expanded .time-display {
+            display: none;
+        }
+        
+        .debug-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .debug-content {
+            background-color: #1c1c1e;
+            border-radius: 12px;
+            padding: 12px;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            color: #fff;
+            height: 380px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        
+        .debug-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .debug-btn {
+            background-color: #007aff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        .ios-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 16px;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #3c3c43;
+        }
+        
+        .ios-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #c6c6c8;
+            font-size: 16px;
+            background-color: #f2f2f7;
+            transition: border-color 0.2s;
+        }
+        
+        .ios-input:focus {
+            outline: none;
+            border-color: #007aff;
+        }
+        
+        .ios-button {
+            background-color: #007aff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        
+        .ios-button:hover {
+            background-color: #0056cc;
+        }
+        
+        .ios-button.secondary {
+            background-color: #e5e5ea;
+            color: #000;
+        }
+        
+        .ios-button.secondary:hover {
+            background-color: #d1d1d6;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .result-area {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            background-color: #f2f2f7;
+            display: none;
+        }
+        
+        .result-success {
+            background-color: #d4f7d4;
+            color: #1f7a1f;
+            display: block;
+        }
+        
+        .result-error {
+            background-color: #ffd6d6;
+            color: #c41e1e;
+            display: block;
+        }
+        
+        .result-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            display: block;
+        }
+        
+        .result-info {
+            background-color: #cce7ff;
+            color: #004085;
+            display: block;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #c6c6c8;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom-color: #007aff;
+            color: #007aff;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .code-editor {
+            width: 100%;
+            height: 200px;
+            background-color: #1c1c1e;
+            color: white;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+            border: none;
+        }
+        
+        .link-converter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .link-converter input {
+            flex: 1;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background-color: #34c759;
+        }
+        
+        .status-offline {
+            background-color: #ff3b30;
+        }
+        
+        .status-processing {
+            background-color: #ffcc00;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .log-area {
+            background-color: #1c1c1e;
+            color: white;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #2c2c2e;
+        }
+        
+        .log-time {
+            color: #8e8e93;
+        }
+        
+        .log-level-info { color: #64d2ff; }
+        .log-level-success { color: #30d158; }
+        .log-level-warning { color: #ffd60a; }
+        .log-level-error { color: #ff453a; }
+        .log-level-debug { color: #bf5af2; }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007aff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .cors-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .unbind-btn {
+            background-color: #ff3b30;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        
+        .unbind-btn:hover {
+            background-color: #d70015;
+        }
+        
+        .unbind-btn:disabled {
+            background-color: #8e8e93;
+            cursor: not-allowed;
+        }
+        
+        .countdown-timer {
+            background-color: #1c1c1e;
+            color: #ffcc00;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 灵动岛 -->
+    <div class="dynamic-island" id="dynamicIsland">
+        <div class="time-display">
+            <span id="currentTime">--:--:--</span>
+        </div>
+        <div class="debug-panel">
+            <div class="debug-header">
+                <span>开发者工具</span>
+                <span class="status-indicator status-online" id="debugStatus"></span>
+            </div>
+            <div class="debug-content" id="debugContent">
+                <!-- 调试信息将在这里显示 -->
+            </div>
+            <div class="debug-controls">
+                <button class="debug-btn" onclick="clearDebug()">清空</button>
+                <button class="debug-btn" onclick="toggleAutoRepair()">自动修复: 关</button>
+                <button class="debug-btn" onclick="exportLogs()">导出日志</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="ios-card">
+        <div class="card-title">
+            <i>🔐</i> 微验卡密验证系统
+        </div>
+        
+        <!-- CORS警告 -->
+        <div class="cors-warning">
+            <strong>注意:</strong> 由于浏览器安全限制，直接请求可能会失败。建议使用以下方法：
+            <br>1. 使用浏览器扩展禁用CORS
+            <br>2. 或使用代理服务器
+        </div>
+        
+        <!-- 标签页 -->
+        <div class="tabs">
+            <div class="tab active" data-tab="verify">卡密验证</div>
+            <div class="tab" data-tab="link-convert">链接转换</div>
+            <div class="tab" data-tab="developer">开发者模式</div>
+        </div>
+        
+        <!-- 卡密验证标签页 -->
+        <div class="tab-content active" id="verify-tab">
+            <div class="input-group">
+                <label class="input-label">卡密</label>
+                <input type="text" class="ios-input" id="cardKey" placeholder="请输入卡密">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">API 端点</label>
+                <input type="text" class="ios-input" id="apiEndpoint" value="https://llua.cn/ajax.php?act=inspect&app=39145">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">会话 Cookie (PHPSESSID)</label>
+                <input type="text" class="ios-input" id="sessionCookie" placeholder="输入PHPSESSID (可选)">
+            </div>
+            
+            <div class="button-group">
+                <button class="ios-button" onclick="verifyCard()" id="verifyBtn">验证卡密</button>
+                <button class="ios-button secondary" onclick="clearInputs()">清空</button>
+            </div>
+            
+            <div id="resultArea" class="result-area"></div>
+            
+            <!-- 解绑按钮区域 -->
+            <div id="unbindArea" style="display: none;">
+                <button class="unbind-btn" onclick="unbindCard()" id="unbindBtn">解绑卡密</button>
+                <div id="countdownArea" class="countdown-timer" style="display: none;"></div>
+            </div>
+            
+            <div class="log-area" id="logArea"></div>
+            
+            <div class="button-group">
+                <button class="ios-button secondary" onclick="toggleLogs()">显示/隐藏日志</button>
+                <button class="ios-button secondary" onclick="testLocalRequest()">测试本地请求</button>
+            </div>
+        </div>
+        
+        <!-- 链接转换标签页 -->
+        <div class="tab-content" id="link-convert-tab">
+            <div class="input-group">
+                <label class="input-label">原始链接</label>
+                <div class="link-converter">
+                    <input type="text" class="ios-input" id="originalLink" placeholder="输入需要转换的链接">
+                    <button class="ios-button" onclick="analyzeAndConvert()">分析转换</button>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">转换结果</label>
+                <input type="text" class="ios-input" id="convertedLink" readonly>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">解析信息</label>
+                <div id="parseInfo" class="result-area result-info">
+                    <!-- 解析信息将在这里显示 -->
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="ios-button secondary" onclick="useConvertedLink()">使用此链接</button>
+                <button class="ios-button secondary" onclick="copyConvertedLink()">复制链接</button>
+            </div>
+        </div>
+        
+        <!-- 开发者模式标签页 -->
+        <div class="tab-content" id="developer-tab">
+            <div class="input-group">
+                <label class="input-label">自定义代码</label>
+                <textarea class="code-editor" id="customCode" placeholder="// 在这里输入自定义JavaScript代码&#10;// 例如: console.log('Hello World');&#10;// 可以使用 cardKey, apiEndpoint 等变量"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button class="ios-button" onclick="executeCustomCode()">执行代码</button>
+                <button class="ios-button secondary" onclick="saveCustomCode()">保存代码</button>
+                <button class="ios-button secondary" onclick="loadCustomCode()">加载代码</button>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">执行结果</label>
+                <div id="customCodeResult" class="result-area">
+                    <!-- 自定义代码执行结果将在这里显示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let debugMode = false;
+        let autoRepairEnabled = false;
+        let logs = [];
+        let customCodeStorage = {};
+        let countdownInterval = null;
+        let currentCardKey = '';
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // 标签页切换
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(this.dataset.tab + '-tab').classList.add('active');
+                });
+            });
+            
+            // 灵动岛点击事件
+            document.getElementById('dynamicIsland').addEventListener('click', function() {
+                this.classList.toggle('expanded');
+            });
+            
+            // 加载保存的自定义代码
+            loadSavedCustomCode();
+        });
+        
+        // 更新时间显示
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('zh-CN', { hour12: false });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+        
+        // 验证卡密 - 使用微验API
+        async function verifyCard() {
+            const cardKey = document.getElementById('cardKey').value;
+            const apiEndpoint = document.getElementById('apiEndpoint').value;
+            const sessionCookie = document.getElementById('sessionCookie').value;
+            
+            if (!cardKey) {
+                showResult('错误: 卡密不能为空', 'error');
+                return;
+            }
+            
+            // 显示加载状态
+            const verifyBtn = document.getElementById('verifyBtn');
+            const originalText = verifyBtn.textContent;
+            verifyBtn.innerHTML = '<div class="loading"></div> 验证中...';
+            verifyBtn.disabled = true;
+            
+            // 隐藏解绑区域
+            document.getElementById('unbindArea').style.display = 'none';
+            
+            showResult('系统处理中，请稍候...', 'info');
+            addLog('INFO', `开始验证卡密: ${cardKey}`);
+            addDebugInfo(`开始验证卡密: ${cardKey}`);
+            addDebugInfo(`API端点: ${apiEndpoint}`);
+            
+            try {
+                // 使用微验API格式
+                const response = await makeWeiyanRequest(apiEndpoint, cardKey, sessionCookie);
+                addDebugInfo(`API响应: ${JSON.stringify(response)}`);
+                
+                // 解析响应
+                parseWeiyanResponse(response, cardKey);
+                
+            } catch (error) {
+                showResult(`请求失败: ${error.message}`, 'error');
+                addLog('ERROR', `请求失败: ${error.message}`);
+                addDebugInfo(`请求错误: ${error.message}`);
+                
+                // 提供解决方案
+                showResult(`请求失败: ${error.message}<br><br>
+                    <strong>解决方案:</strong><br>
+                    1. 使用浏览器扩展禁用CORS<br>
+                    2. 或使用代理服务器<br>
+                    3. 点击"测试本地请求"按钮`, 'error');
+            } finally {
+                // 恢复按钮状态
+                verifyBtn.textContent = originalText;
+                verifyBtn.disabled = false;
+            }
+        }
+        
+        // 使用微验API格式发送请求
+        function makeWeiyanRequest(url, cardKey, sessionCookie) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                const params = `kami=${encodeURIComponent(cardKey)}`;
+                
+                xhr.open('POST', url, true);
+                // 设置请求头
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+                xhr.setRequestHeader('Referer', 'https://llua.cn/');
+                xhr.setRequestHeader('Origin', 'https://llua.cn');
+                
+                if (sessionCookie) {
+                    xhr.setRequestHeader('Cookie', `PHPSESSID=${sessionCookie}`);
+                }
+                
+                xhr.timeout = 15000; // 15秒超时
+                
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            resolve(response);
+                        } catch (e) {
+                            reject(new Error('响应格式错误，无法解析JSON'));
+                        }
+                    } else {
+                        reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    reject(new Error('网络请求失败，可能是CORS限制'));
+                };
+                
+                xhr.ontimeout = function() {
+                    reject(new Error('请求超时'));
+                };
+                
+                try {
+                    xhr.send(params);
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+        
+        // 解析微验API响应
+        function parseWeiyanResponse(response, cardKey) {
+            const code = response.code;
+            const msg = response.msg;
+            const dismissset = response.dismissset;
+            
+            currentCardKey = cardKey;
+            
+            addLog('INFO', `卡密验证结果 - 卡密: ${cardKey}, 代码: ${code}, 消息: ${msg}`);
+            
+            // 显示清理后的消息
+            let resultHtml = `<strong>验证结果</strong><br>卡密: ${cardKey}<br><br>`;
+            resultHtml += `<strong>处理结果:</strong><br>`;
+            
+            if (msg) {
+                msg.split('<br>').forEach(line => {
+                    if (line.trim()) {
+                        resultHtml += `• ${line}<br>`;
+                    }
+                });
+            }
+            
+            // 显示整体状态
+            switch (code) {
+                case 0:
+                    resultHtml += `<br><strong>验证状态:</strong> 处理成功`;
+                    showResult(resultHtml, 'success');
+                    
+                    // 如果支持解绑，显示解绑按钮
+                    if (dismissset === "y") {
+                        document.getElementById('unbindArea').style.display = 'block';
+                        document.getElementById('unbindBtn').disabled = false;
+                        document.getElementById('countdownArea').style.display = 'none';
+                    }
+                    break;
+                case 1:
+                    resultHtml += `<br><strong>验证状态:</strong> 抱歉失败`;
+                    showResult(resultHtml, 'error');
+                    break;
+                case -1:
+                    resultHtml += `<br><strong>验证状态:</strong> 验证失败`;
+                    showResult(resultHtml, 'error');
+                    break;
+                case -2:
+                    resultHtml += `<br><strong>验证状态:</strong> ⚠ 解绑间隔不足`;
+                    showResult(resultHtml, 'warning');
+                    break;
+                default:
+                    resultHtml += `<br><strong>验证状态:</strong> ? 未知状态 (${code})`;
+                    showResult(resultHtml, 'warning');
+            }
+        }
+        
+        // 解绑卡密
+        async function unbindCard() {
+            if (!currentCardKey) {
+                showResult('错误: 没有可解绑的卡密', 'error');
+                return;
+            }
+            
+            addLog('INFO', `开始解绑卡密: ${currentCardKey}`);
+            addDebugInfo(`开始解绑卡密: ${currentCardKey}`);
+            
+            // 禁用解绑按钮
+            document.getElementById('unbindBtn').disabled = true;
+            document.getElementById('unbindBtn').innerHTML = '<div class="loading"></div> 解绑中...';
+            
+            showResult('正在处理解绑卡密...', 'info');
+            
+            const apiEndpoint = "https://llua.cn/ajax.php";
+            const sessionCookie = document.getElementById('sessionCookie').value;
+            
+            try {
+                const unbindUrl = `${apiEndpoint}?act=kmdismissset&id=39145`;
+                
+                const response = await makeWeiyanRequest(unbindUrl, currentCardKey, sessionCookie);
+                
+                // 解析解绑结果
+                const unbindCode = response.code;
+                const unbindMsg = response.msg;
+                
+                // 显示解绑结果
+                switch (unbindCode) {
+                    case 0:
+                        showResult(`解绑成功: ${unbindMsg}`, 'success');
+                        addLog('SUCCESS', `卡密 ${currentCardKey} 解绑成功: ${unbindMsg}`);
+                        document.getElementById('unbindArea').style.display = 'none';
+                        break;
+                    case -2:
+                        showResult(`解绑间隔不足: ${unbindMsg}`, 'warning');
+                        addLog('WARNING', `卡密 ${currentCardKey} 解绑间隔不足: ${unbindMsg}`);
+                        
+                        // 显示倒计时
+                        if (response.endtime) {
+                            startUnbindCountdown(response.endtime);
+                        }
+                        break;
+                    case -1:
+                        if (unbindMsg && (unbindMsg.includes('未绑定') || unbindMsg.includes('无需解绑'))) {
+                            showResult(`无需解绑: ${unbindMsg}`, 'success');
+                            addLog('INFO', `卡密 ${currentCardKey} 无需解绑: ${unbindMsg}`);
+                            document.getElementById('unbindArea').style.display = 'none';
+                        } else {
+                            showResult(`解绑失败: ${unbindMsg}`, 'error');
+                            addLog('ERROR', `卡密 ${currentCardKey} 解绑失败: ${unbindMsg}`);
+                            document.getElementById('unbindBtn').disabled = false;
+                            document.getElementById('unbindBtn').textContent = '解绑卡密';
+                        }
+                        break;
+                    default:
+                        showResult(`解绑失败 (代码 ${unbindCode}): ${unbindMsg}`, 'error');
+                        addLog('ERROR', `卡密 ${currentCardKey} 解绑失败 (代码 ${unbindCode}): ${unbindMsg}`);
+                        document.getElementById('unbindBtn').disabled = false;
+                        document.getElementById('unbindBtn').textContent = '解绑卡密';
+                }
+                
+            } catch (error) {
+                showResult(`解绑请求失败: ${error.message}`, 'error');
+                addLog('ERROR', `解绑请求失败: ${error.message}`);
+                document.getElementById('unbindBtn').disabled = false;
+                document.getElementById('unbindBtn').textContent = '解绑卡密';
+            }
+        }
+        
+        // 开始解绑倒计时
+        function startUnbindCountdown(seconds) {
+            document.getElementById('countdownArea').style.display = 'block';
+            document.getElementById('unbindBtn').disabled = true;
+            document.getElementById('unbindBtn').textContent = '等待解绑冷却';
+            
+            let remainingTime = seconds;
+            
+            // 清除之前的倒计时
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            // 更新倒计时显示
+            function updateCountdown() {
+                const hours = Math.floor(remainingTime / 3600);
+                const minutes = Math.floor((remainingTime % 3600) / 60);
+                const secs = remainingTime % 60;
+                
+                document.getElementById('countdownArea').innerHTML = 
+                    `解绑冷却时间: ${hours}小时 ${minutes}分钟 ${secs}秒`;
+                
+                remainingTime--;
+                
+                if (remainingTime < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('countdownArea').style.display = 'none';
+                    document.getElementById('unbindBtn').disabled = false;
+                    document.getElementById('unbindBtn').textContent = '解绑卡密';
+                    showResult('解绑冷却时间已结束，可以重新尝试解绑', 'info');
+                }
+            }
+            
+            // 立即更新一次
+            updateCountdown();
+            
+            // 每秒更新一次
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+        
+        // 测试本地请求（绕过CORS）
+        function testLocalRequest() {
+            const cardKey = document.getElementById('cardKey').value;
+            if (!cardKey) {
+                showResult('错误: 请先输入卡密', 'error');
+                return;
+            }
+            
+            showResult('正在尝试本地请求方式...', 'info');
+            addLog('INFO', '开始测试本地请求');
+            
+            // 创建一个隐藏的iframe来发送请求
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = `https://llua.cn/?mod=cardcheck&id=39145&kami=${encodeURIComponent(cardKey)}`;
+            
+            iframe.onload = function() {
+                showResult('本地请求已发送，但无法直接获取响应。<br>建议使用以下方法:<br>1. 安装CORS解除浏览器扩展<br>2. 使用代理服务器', 'info');
+                addLog('INFO', '本地请求完成');
+                document.body.removeChild(iframe);
+            };
+            
+            document.body.appendChild(iframe);
+        }
+        
+        // 显示结果
+        function showResult(message, type) {
+            const resultArea = document.getElementById('resultArea');
+            resultArea.innerHTML = message;
+            resultArea.className = 'result-area';
+            
+            if (type) {
+                resultArea.classList.add(`result-${type}`);
+            }
+        }
+        
+        // 添加日志
+        function addLog(level, message) {
+            const timestamp = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            const logEntry = {
+                timestamp,
+                level,
+                message
+            };
+            
+            logs.push(logEntry);
+            
+            // 更新日志显示
+            updateLogDisplay();
+        }
+        
+        // 更新日志显示
+        function updateLogDisplay() {
+            const logArea = document.getElementById('logArea');
+            let logHtml = '';
+            
+            logs.slice(-20).forEach(log => {
+                logHtml += `<div class="log-entry">
+                    <span class="log-time">[${log.timestamp}]</span>
+                    <span class="log-level-${log.level.toLowerCase()}">[${log.level}]</span>
+                    ${log.message}
+                </div>`;
+            });
+            
+            logArea.innerHTML = logHtml;
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+        
+        // 添加调试信息
+        function addDebugInfo(message) {
+            if (!debugMode) return;
+            
+            const debugContent = document.getElementById('debugContent');
+            const timestamp = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            
+            debugContent.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            debugContent.scrollTop = debugContent.scrollHeight;
+        }
+        
+        // 清空调试信息
+        function clearDebug() {
+            document.getElementById('debugContent').innerHTML = '';
+        }
+        
+        // 切换自动修复
+        function toggleAutoRepair() {
+            autoRepairEnabled = !autoRepairEnabled;
+            const button = document.querySelector('.debug-controls button:nth-child(2)');
+            button.textContent = `自动修复: ${autoRepairEnabled ? '开' : '关'}`;
+            
+            addDebugInfo(`自动修复 ${autoRepairEnabled ? '已启用' : '已禁用'}`);
+            addLog('INFO', `自动修复 ${autoRepairEnabled ? '已启用' : '已禁用'}`);
+        }
+        
+        // 导出日志
+        function exportLogs() {
+            const logText = logs.map(log => `[${log.timestamp}] [${log.level}] ${log.message}`).join('\n');
+            const blob = new Blob([logText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `card_verify_${new Date().toISOString().replace(/[:.]/g, '-')}.log`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            URL.revokeObjectURL(url);
+            
+            addDebugInfo('日志已导出');
+            addLog('INFO', '日志已导出');
+        }
+        
+        // 切换日志显示
+        function toggleLogs() {
+            const logArea = document.getElementById('logArea');
+            logArea.style.display = logArea.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // 清空输入
+        function clearInputs() {
+            document.getElementById('cardKey').value = '';
+            document.getElementById('sessionCookie').value = '';
+            document.getElementById('resultArea').innerHTML = '';
+            document.getElementById('resultArea').className = 'result-area';
+            document.getElementById('unbindArea').style.display = 'none';
+            
+            // 清除倒计时
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+        
+        // 链接转换功能
+        function analyzeAndConvert() {
+            const originalLink = document.getElementById('originalLink').value;
+            
+            if (!originalLink) {
+                document.getElementById('parseInfo').innerHTML = '错误: 请输入链接';
+                document.getElementById('parseInfo').className = 'result-area result-error';
+                return;
+            }
+            
+            addDebugInfo(`分析链接: ${originalLink}`);
+            
+            // 模拟链接分析
+            setTimeout(() => {
+                let convertedLink = '';
+                let parseInfo = '';
+                
+                if (originalLink.includes('cardcheck')) {
+                    // 假设这是另一种卡密验证链接格式
+                    convertedLink = originalLink.replace('cardcheck', 'ajax.php?act=inspect');
+                    parseInfo = '检测到卡密验证链接，已转换为API端点格式';
+                } else if (originalLink.includes('ajax.php')) {
+                    // 假设这是API端点格式
+                    convertedLink = originalLink;
+                    parseInfo = '检测到API端点格式，无需转换';
+                } else {
+                    // 未知格式，尝试转换
+                    convertedLink = `https://llua.cn/ajax.php?${originalLink.split('?')[1] || 'act=inspect&app=39145'}`;
+                    parseInfo = '未知链接格式，尝试转换为标准API端点';
+                }
+                
+                document.getElementById('convertedLink').value = convertedLink;
+                document.getElementById('parseInfo').innerHTML = parseInfo;
+                document.getElementById('parseInfo').className = 'result-area result-info';
+                
+                addDebugInfo(`链接转换完成: ${convertedLink}`);
+                addLog('INFO', `链接转换: ${originalLink} -> ${convertedLink}`);
+            }, 1000);
+        }
+        
+        // 使用转换后的链接
+        function useConvertedLink() {
+            const convertedLink = document.getElementById('convertedLink').value;
+            if (convertedLink) {
+                document.getElementById('apiEndpoint').value = convertedLink;
+                
+                // 切换到验证标签页
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                document.querySelector('.tab[data-tab="verify"]').classList.add('active');
+                document.getElementById('verify-tab').classList.add('active');
+                
+                addLog('INFO', `已应用转换后的链接: ${convertedLink}`);
+            }
+        }
+        
+        // 复制转换后的链接
+        function copyConvertedLink() {
+            const convertedLink = document.getElementById('convertedLink').value;
+            if (convertedLink) {
+                navigator.clipboard.writeText(convertedLink).then(() => {
+                    alert('链接已复制到剪贴板');
+                    addLog('INFO', `已复制链接: ${convertedLink}`);
+                });
+            }
+        }
+        
+        // 执行自定义代码
+        function executeCustomCode() {
+            const customCode = document.getElementById('customCode').value;
+            const resultArea = document.getElementById('customCodeResult');
+            
+            if (!customCode.trim()) {
+                resultArea.innerHTML = '错误: 请输入自定义代码';
+                resultArea.className = 'result-area result-error';
+                return;
+            }
+            
+            try {
+                // 创建执行环境
+                const cardKey = document.getElementById('cardKey').value;
+                const apiEndpoint = document.getElementById('apiEndpoint').value;
+                const sessionCookie = document.getElementById('sessionCookie').value;
+                
+                // 使用Function构造函数执行代码，避免使用eval
+                const func = new Function('cardKey', 'apiEndpoint', 'sessionCookie', 'addLog', 'addDebugInfo', customCode);
+                const result = func(cardKey, apiEndpoint, sessionCookie, addLog, addDebugInfo);
+                
+                resultArea.innerHTML = `代码执行成功: ${result || '无返回值'}`;
+                resultArea.className = 'result-area result-success';
+                
+                addLog('INFO', '自定义代码执行成功');
+                addDebugInfo('自定义代码执行成功');
+            } catch (error) {
+                resultArea.innerHTML = `代码执行错误: ${error.message}`;
+                resultArea.className = 'result-area result-error';
+                
+                addLog('ERROR', `自定义代码执行错误: ${error.message}`);
+                addDebugInfo(`自定义代码执行错误: ${error.message}`);
+            }
+        }
+        
+        // 保存自定义代码
+        function saveCustomCode() {
+            const customCode = document.getElementById('customCode').value;
+            const name = prompt('请输入代码名称:');
+            
+            if (name) {
+                customCodeStorage[name] = customCode;
+                localStorage.setItem('customCodeStorage', JSON.stringify(customCodeStorage));
+                
+                addLog('INFO', `自定义代码已保存: ${name}`);
+                addDebugInfo(`自定义代码已保存: ${name}`);
+            }
+        }
+        
+        // 加载自定义代码
+        function loadCustomCode() {
+            const names = Object.keys(customCodeStorage);
+            
+            if (names.length === 0) {
+                alert('没有保存的自定义代码');
+                return;
+            }
+            
+            const name = prompt(`请输入要加载的代码名称:\n可用代码: ${names.join(', ')}`);
+            
+            if (name && customCodeStorage[name]) {
+                document.getElementById('customCode').value = customCodeStorage[name];
+                addLog('INFO', `自定义代码已加载: ${name}`);
+                addDebugInfo(`自定义代码已加载: ${name}`);
+            } else {
+                alert('代码不存在');
+            }
+        }
+        
+        // 加载保存的自定义代码
+        function loadSavedCustomCode() {
+            const saved = localStorage.getItem('customCodeStorage');
+            if (saved) {
+                customCodeStorage = JSON.parse(saved);
+            }
+        }
+        
+        // 启用调试模式
+        function enableDebugMode() {
+            debugMode = true;
+            document.getElementById('debugStatus').className = 'status-indicator status-processing';
+            addDebugInfo('调试模式已启用');
+        }
+        
+        // 初始化调试模式
+        enableDebugMode();
+    </script>
+</body>
+</html>
