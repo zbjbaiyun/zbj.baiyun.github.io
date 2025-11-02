@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酷玩科技 - 让游戏更精彩</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ff9d;
+            --secondary-color: #0066cc;
+            --dark-color: #0a0a0a;
+            --light-color: #f0f0f0;
+            --accent-color: #ff00aa;
+            --vip-gold: #FFD700;
+            --svip-purple: #9B30FF;
+            --star-red: #FF3030;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: var(--light-color);
+            background-color: var(--dark-color);
+            overflow-x: hidden;
+            位置: 相对的;
+            最小高度: 100VH;
+        }
+        
+        /*VIP状态样式*/
+        .vip状态 {
+            位置: 确定的;
+            顶端: 20PX;
+            左: 20PX;
+            背景: RGBA(0, 0, 0, 0.7);
+            填充: 8PX 15PX;
+            边界半径: 20PX;
+            字体大小: 1REM;
+            字体粗细: 大胆的;
+            Z指数: 100;
+            显示: 弯曲;
+            对齐项目: 中心;
+            差距: 8PX;
+            边境: 1PX 固体 var(--原色);
+        }
+        
+        .vip状态.贵宾 {
+            边框颜色: var(--vip-gold);
+            颜色: var(--vip-gold);
+        }
+        
+        .宽度.SVIP {
+            边框颜色: var(--svip-purple);
+            底边距: var(--svip-purple);
+        背景
+        
+        .vip状态.星 {
+            边框颜色: var(--红星);
+            </: 风格(--红星);
+        </
+        
+        .<! -- 加载动画 --> i {
+            <: 1.2em;
+        }
+        
+        <
+        body.vip-theme {
+            </: #FFD700;
+            --accent-color: #FFA500;
+        <！--VIP状态显示-->
+        
+        <.svip-theme {
+            --primary-color: #9B30FF;
+            </: #FF00FF;
+        }
+        
+        <.div {
+            --primary-color: #FF3030;
+            --accent-color: #FF1493;
+        <
+        
+        <! -- 时间显示 -->
+        .vip-theme #particles-js {
+            background: linear-gradient(135deg, #1a1a00 0%, #333300 100%);
+        <! -- 音乐播放器 -->
+        
+        .svip-theme #particles-js {
+            <! -- 音乐控制区域 -->: linear-gradient(135deg, #0a001a 0%, #1a0033 100%);
+        <
+        
+        .< #particles-js {
+            background: linear-gradient(135deg, #1a0000 0%, #330000 100%);
+        <
+        
+        <
+        .vip-theme .product-description::before {
+            animation: rainbow-border 3s linear infinite;
+        <
+        
+        .svip-theme .product-description::before {
+            animation: rainbow-border 2s linear infinite;
+        }
+        
+        .star-theme .product-description::before {
+            animation: rainbow-border 1s linear infinite;
+        }
+        
+        @keyframes rainbow-border {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+      
+        #particles-js {
+            position: fixed;
+            <: p%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        }
+        
+        .snowflake </
+            position: fixed;
+            color: var(--primary-color);
+            font-size: 1em;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 9999;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .time-display <
+            position: fixed;
+            top: <px;
+            right: 20px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--primary-color);
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--primary-color);
+        }
+        
+        .music-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        
+        .music-control-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .music-control-btn:hover {
+            background: rgba(0, 255, 157, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .music-info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--primary-color);
+            font-size: 0.9rem;
+            max-width: 300px;
+            text-align: right;
+        }
+        
+        .music-nav-btns {
+            display: flex;
+            gap: 10px;
+        }
+        
+        header {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px var(--primary-color));
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 15px var(--accent-color));
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 3rem;
+            text-shadow: 0 0 10px var(--primary-color);
+            letter-spacing: 3px;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .slogan {
+            font-size: 1.5em;
+            color: var(--light-color);
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .product-description {
+            background: rgba(0, 102, 204, 0.2);
+            border: 2px solid var(--secondary-color);
+            padding: 30px;
+            margin: 40px 0;
+            border-radius: 10px;
+            font-weight: bold;
+            color: var(--light-color);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(0, 102, 204, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-description::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+            z-index: -1;
+            border-radius: 10px;
+            opacity: 0.5;
+        }
+        
+        .product-description:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 102, 204, 0.8);
+        }
+        
+        .product-description h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .product-description p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+        }
+        
+        .product-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 60px 0;
+            flex-wrap: wrap;
+        }
+        
+        .product-showcase img {
+            max-width: 500px;
+            width: 100%;
+            高度: 自动;
+            边境: 2PX 固体 var(--原色);
+            边界半径: 10PX;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+        
+        .product-showcase img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.6);
+        }
+        
+        .contact {
+            text-align: center;
+            margin: 60px 0;
+            padding: 40px 20px;
+            background: rgba(10, 10, 10, 0.7);
+            border-top: 2px solid var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+        
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.1), transparent);
+            z-index: -1;
+        }
+        
+        .contact h2 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+        
+        .contact p {
+            font-size: 1.3rem;
+            margin: 15px 0;
+            color: var(--light-color);
+        }
+        
+        .contact-info {
+            margin: 30px 0;
+        }
+        
+        .qq-group-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 255, 157, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .qq-group-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 157, 0.6);
+            background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+            color: var(--light-color);
+        }
+        
+        .qq-group-btn:active {
+            transform: translateY(1px);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(10, 10, 10, 0.9);
+            color: var(--light-color);
+            font-size: 1rem;
+            border-top: 1px solid var(--primary-color);
+            position: relative;
+            z-index: 10;
+        }
+        
+        footer p {
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .slogan {
+                font-size: 1.2rem;
+            }
+            
+            .product-description h2 {
+                font-size: 1.5rem;
+            }
+            
+            .product-description p {
+                font-size: 1rem;
+            }
+            
+            .contact h2 {
+                font-size: 1.8rem;
+            }
+            
+            .contact p {
+                font-size: 1rem;
+            }
+            
+            .qq-group-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            
+            .music-info {
+                max-width: 200px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0, 255, 157, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .loader-text {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+        
+        .neon-text {
+            animation: flicker 1.5s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 5px var(--primary-color),
+                             0 0 10px var(--primary-color),
+                             0 0 20px var(--primary-color),
+                             0 0 40px var(--accent-color),
+                             0 0 80px var(--accent-color),
+                             0 0 90px var(--accent-color),
+                             0 0 100px var(--accent-color),
+                             0 0 150px var(--accent-color);
+            }
+            20%, 24%, 55% {
+文本阴影：无；文本阴影：没有一个;
+            }
+        }
+
+/* 歌词显示框样式 *//* 歌词显示框样式 */
+。歌词容器{lyrics-container {
+位置：固定；位置：确定的;
+底部：100px；bottom：100;
+右：20px；right：20;
+背景：rgba(0，0，0，0.7)；背景：RGBA(0, 0, 0, 0.7);
+填料：10px20px；padding:10 PXPX;
+边界半径：10px；border-radius:10;
+边框：1px实体变量(--primary-color)；边框：1PX(--原色)；固体PX(--原色);
+最大宽度：300px；max-width：最大宽度px最大宽度：300px；max-width：最大宽度px；
+文本对齐：居中；文本对齐：文本对齐文本对齐：居中；文字对齐：文本对齐；
+Z指数：100；z指数：Z指数Z指数：100；z指数：Z指数；
+显示：无；显示：显示显示：无；显示：显示；
+}}
+
+/* 客服按钮样式 *//* 客服按钮样式 */
+.客户服务-btn{客户服务-btn.{客户服务-btn{{
+位置：固定；位置：位置位置：固定；位置：位置；
+底部：20px；bottom：底部px底部：20px；bottom：底部px；
+左：20px；left：左px左：20px；左：左px；
+背景：线性梯度(45度，var(--重音色)，var(--主色))；背景：背景(背景：线性梯度(45度，var(--重音色)，var--主色--主色)；背景：背景；背景：背景45 var(--主色)；线性梯度45线性梯度，var(--cent-colordeg，varvar-rimary-color-cent-color)；线性梯度
+颜色：白色；颜色：颜色颜色：白色；颜色：颜色；
+宽度：60px；width：宽度px宽度：60px；width：宽度px；
+高度：60px；高度：高度px高度：60px；高度：高度px；
+边界半径：50边界半径：50%；b边界半径：50%；；边界半径：50%;
+显示：柔性；显示：显示显示：柔性；显示：显示；
+对齐-内容：居中；justify-content:justify-content对齐-内容：居中；对齐-内容:justify-Content；;justify-Content；
+对齐项：居中；对齐项目：对齐项目对齐项：居中；对齐项目：对齐项目；
+光标：指针；光标：光标光标：指针；游标：光标；
+字体大小font-size：字体大小px；font-size:24px；字体大小PX；font-size: 24PX;
+盒阴影：0010px盒阴影：0010px盒阴影：0010pxPX(0，0，0，0.5RGBA；箱形阴影(0，0，0，0.5)；长方体阴影：0010pxPX(PX，0，0，000，0，0，0.5RGBA；(.5RGBA；箱形阴影，0，0，0.5RGBA；箱形阴影)；长方体阴影：00:0 0 1010 PX：(，0.5PX，0.5;
+Z指数：100；z指数：Z指数
+}}
+
+/* 聊天弹窗样式 *//* 聊天弹窗样式 */
+。聊天模态{聊天模态。聊天模态{聊天模式{{
+显示：无；显示：显示
+位置：固定；位置：位置
+顶端顶端：顶端顶端顶端：顶端%；顶部：50%；顶端%；；至p:50%；顶端%；顶部：50%;
+左侧：50左侧：50左侧：50左侧：50%；左侧：；左侧：50%；左: 50%;50%；左: 50%;
+转换：平移(-50%，-50-50转换：平移(-50%，-50-50%，-50%改变；改变：翻译(-50%，-50%)；改变；改变：翻译(-50%，-50%翻译；，-50%改变；改变：翻译(-50%，-50%)；改变；改变: 翻译(-50%，-50%);
+宽度：80宽度：80宽度：80宽度：80%宽度: 80%;宽度: 80%;宽度: 80%;宽度: 80%;
+最大宽度：500px；max-width：最大宽度px
+背景：RGBA(背景：RGBA(10，10，10，0.95)；背景：背景(10背景：RGBA(10，10，10，0.95)；背景：背景(10，10，10，0，101010，0.9510，，10，10，0.95)；背景：背景(10背景：RGBA(10，10，10，0.95)；背景：背景(10，10，10，0，10,10，；背景：背景，
+边框：2px实体变量边界--原色)；b顺序)边框：2px实体变量边界--原色)；b顺序)：2px：固体px固体var(--原色)；PX:2 PX)；PX；PX：固体px固体var)；PX var var--原色--原色);
+边界半径：10px；border-radius：边界半径px
+填料：20px；padding：填充px
+Z指数：1000Z指数：1000；
+}
+                /* 消息显示区域样式 */
+        .message-area {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        /* 输入框样式 */
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">酷玩科技 加载中...</div>
+        </div>
+    </div>
+    
+    <!-- VIP状态显示 -->
+    <div class="vip-status" id="vipStatus" style="display: none;">
+        <i class="fas fa-crown"></i>
+        <span id="vipLevelText"></span>
+    </div>
+    
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <!-- 雪花效果 -->
+    <div id="snowflakes-container"></div>
+    
+    <!-- 时间显示 -->
+    <div class="time-display" id="timeDisplay"></div>
+    
+    <!-- 音乐播放器 -->
+    <audio id="bgMusic"></audio>
+    
+    <!-- 音乐控制区域 -->
+    <div class="music-controls">
+        <div class="music-info" id="musicInfo">音乐加载中...</div>
+        <div class="music-nav-btns">
+            <div class="music-control-btn" id="prevBtn">
+                <i class="fas fa-step-backward"></i>
+            </div>
+            <div class="music-control-btn" id="playPauseBtn">
+                <i class="fas fa-music"></i>
+            </div>
+            <div class="music-control-btn" id="nextBtn">
+                <i class="fas fa-step-forward"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- 歌词显示容器 -->
+    <div class="lyrics-container" id="lyricsDisplay"></div>
+
+    <!-- 客服按钮 -->
+    <div class="customer-service-btn" id="customerServiceBtn">
+        <i class="fas fa-headset"></i>
+    </div>
+
+    <!-- 聊天弹窗 -->
+    <div class="chat-modal" id="chatModal">
+        <h3 style="color: var(--primary-color); text-align: center;">酷玩科技客服系统</h3>
+        <div id="pairCodeSection">
+            <p id="pairCodeDisplay"></p>
+            <input type="text" id="pairCodeInput" class="chat-input" placeholder="输入配对码">
+            <button class="qq-group-btn" id="connectBtn">连接客服</button>
+        </div>
+        <div id="chatSection" style="display: none;">
+            <div class="message-area" id="messageArea"></div>
+            <input type="text" id="messageInput" class="chat-input" placeholder="输入消息...">
+            <button class="qq-group-btn" id="sendBtn">发送</button>
+        </div>
+    </div>
+    
+    <header>
+        <!-- 这里LOGO图片 -->
+        <img src="logo.png" alt="酷玩科技LOGO" class="logo">
+        <h1 class="neon-text">酷玩科技</h1>
+        <p class="slogan">酷玩让生活燃起来</p>
+    </header>
+    
+    <div class="main-content">
+        <div class="product-description">
+            <h2>产品用途</h2>
+            <p>我们产品专为黑客用途设计，注入到游戏里面，让游戏作弊更轻松，更稳定，脚踩游戏检测。我们主要是让用户更好的体验关于作弊的快乐。</p>
+            <h2>更新公告</h2>
+            <p>我们产品专为黑客用途设计，注入到游戏里面，让游戏作弊更轻松，更稳定，脚踩游戏检测。我们主要是让用户更好的体验关于作弊的快乐。</p>
+        </div>
+        <div class="main-content">
+        <div class="product-description">
+   </h2>
+            <p>我们创造理念主要是为大众用户啊，因游戏打这不快乐而诞生，以最大的态度去服务每一位用户，用心创造真谛</p>
+        </div>
+        
+       <footer>
+            <button class="qq-group-btn" onclick="window.open('http://9178qwe.cq26.xyz/', '_blank')">卡密购买</button>
+                  
+            <button class="qq-group-btn" onclick="window.open('km.html', '_blank')">卡密充值</button></p>
+           
+        <button class="qq-group-btn" onclick="window.open('ld.html', '_blank')">新版雷达</button>
+        <button class="qq-group-btn" onclick="window.open('leida.html', '_blank')">旧版雷达</button>
+            </foorer>
+            </footer>
+            <p>我们致力于服务每一位用户，以最大的体验感让用户对我们产生足够的信任与保证，你们的账号能够持续稳定早日上战神</p>
+        </footer>
+        </div>
+        <div class="product-showcase">
+            <!-- 这里需要替换为您的产品效果展示图片 -->      
+            <img src="效果1.png" alt="产品效果展示1">
+<img src="效果2.png" alt="产品效果展示2">
+<img src="效果3.png" alt="产品效果展示3">
+<img src="效果4.png" alt="产品效果展示4">
+<img src="效果5.png" alt="产品效果展示5">
+<img src="效果6.png" alt="产品效果展示6">
+<img src="效果7.png" alt="产品效果展示7">
+<img src="效果8.png" alt="产品效果展示8">
+<img src="效果9.png" alt="产品效果展示9">
+<img src="效果10.png" alt="产品效果展示10">
+<img src="效果11.png" alt="产品效果展示11">
+<img src="效果12.png" alt="产品效果展示12">
+<img src="效果13.png" alt="产品效果展示13">
+<img src="效果14.png" alt="产品效果展示14">
+<img src="效果15.png" alt="产品效果展示15">
+<img src="效果16.png" alt="产品效果展示16">
+<img src="效果17.png" alt="产品效果展示17">
+<img src="效果18.png" alt="产品效果展示18">
+<img src="效果19.png" alt="产品效果展示19">
+<img src="效果20.png" alt="产品效果展示20">
+<img src="效果21.png" alt="产品效果展示21">
+<img src="效果22.png" alt="产品效果展示22">
+<img src="效果23.png" alt="产品效果展示23">
+<img src="效果24.png" alt="产品效果展示24">
+<img src="效果25.png" alt="产品效果展示25">
+<img src="效果26.png" alt="产品效果展示26">
+<img src="效果27.png" alt="产品效果展示27">
+<img src="效果28.png" alt="产品效果展示28">
+<img src="效果29.png" alt="产品效果展示29">
+<img src="效果30.png" alt="产品效果展示30">
+<p>如果感觉做的不错，那就给我的咖啡加杯糖</p>
+<img src="效果31.png" alt="产品效果展示31">
+        
+        <div class="contact">
+            <h2 class="neon-text">联系方式</h2>
+            <div class="contact-info">
+                <p>客服: 1929615151</p>
+                <p>邮箱地址: 1929615151@qq.com</p>
+            </div>
+            <button class="qq-group-btn" onclick="window.open('https://qm.qq.com/q/Ccq8MU7Pb2', '_blank')">加入QQ群</button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>版权所有，仿冒必究</p>
+     <p>ICP备案号:鲁ICP备2025047083号-4A </p>
+        <p>copyright @China 2023-2025酷玩科技 版权所有 </p>
+    </footer>
+    
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- particles.js 库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // 检查URL参数是否有VIP状态
+        function checkVIPFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const vipLevel = urlParams.get('vip');
+            
+            if (vipLevel) {
+                activateVIP(vipLevel);
+                // 存储到localStorage以便页面刷新后保持状态
+                localStorage.setItem('coolplay_vip_status', vipLevel);
+            } else {
+                // 检查localStorage中是否有VIP状态
+                const storedVIP = localStorage.getItem('coolplay_vip_status');
+                if (storedVIP) {
+                    activateVIP(storedVIP);
+                }
+            }
+        }
+        
+        // 激活VIP状态
+        function activateVIP(level) {
+            const vipStatus = document.getElementById('vipStatus');
+            const vipLevelText = document.getElementById('vipLevelText');
+            
+            // 移除所有可能的VIP主题类
+            document.body.classList.remove('vip-theme', 'svip-theme', 'star-theme');
+            
+            switch(level) {
+                case 'vip':
+                    document.body.classList.add('vip-theme');
+                    vipStatus.classList.add('vip');
+                    vipLevelText.textContent = 'VIP会员';
+                    break;
+                case 'svip':
+                    document.body.classList.add('svip-theme');
+                    vipStatus.classList.add('svip');
+                    vipLevelText.textContent = 'SVIP会员';
+                    break;
+                case 'star':
+                    document.body.classList.add('star-theme');
+                    vipStatus.classList.add('star');
+                    vipLevelText.textContent = 'STAR超星星会员';
+                    break;
+            }
+            
+            vipStatus.style.display = 'flex';
+            
+            // 更新粒子效果
+            updateParticlesForVIP();
+        }
+        
+        // 更新粒子效果以适应VIP主题
+        function updateParticlesForVIP() {
+            if (particlesJS) {
+                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+                
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": {
+                            "value": 100,
+                            "density": {
+                                "enable": true,
+                                "value_area": 800
+                            }
+                        },
+                        "color": {
+                            "value": primaryColor
+                        },
+                        "shape": {
+                            "type": "circle",
+                            "stroke": {
+                                "width": 0,
+                                "color": "#000000"
+                            },
+                            "polygon": {
+                                "nb_sides": 5
+                            }
+                        },
+                        "opacity": {
+                            "value": 0.7,
+                            "random": false,
+                            "anim": {
+                                "enable": false,
+                                "speed": 1,
+                                "opacity_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "size": {
+                            "value": 4,
+                            "random": true,
+                            "anim": {
+                                "enable": false,
+                                "speed": 40,
+                                "size_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": primaryColor,
+                            "opacity": 0.6,
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 3,
+                            "direction": "none",
+                            "random": false,
+                            "straight": false,
+                            "out_mode": "out",
+                            "bounce": false,
+                            "attract": {
+                                "enable": false,
+                                "rotateX": 600,
+                                "rotateY": 1200
+                            }
+                        }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "grab"
+                            },
+                            "onclick": {
+                                "enable": true,
+                                "mode": "push"
+                            },
+                            "resize": true
+                        },
+                        "modes": {
+                            "grab": {
+                                "distance": 140,
+                                "line_linked": {
+                                    "opacity": 1
+                                }
+                            },
+                            "bubble": {
+                                "distance": 400,
+                                "size": 40,
+                                "duration": 2,
+                                "opacity": 8,
+“速度”：3
+                            },
+                            "repulse": {
+                                "distance": 200,
+                                "duration": 0.4
+                            },
+                            "push": {
+                                "particles_nb": 4
+                            },
+                            "remove": {
+                                "particles_nb": 2
+                            }
+                        }
+                    },
+                    "retina_detect": true
+                });
+            }
+        }
+        
+        // 页面加载完
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查VIP状态
+            checkVIPFromURL();
+            
+            // 隐藏加载动画
+            setTimeout(function() {
+                document.querySelector('.loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.querySelector('.loader').style.display = 'none';
+                }, 500);
+            }, 1500);
+            
+            // 初始化粒子
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#00ff9d"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+"color"："#00ff9d"，
+“不透明度”：0.4，
+“宽度”：1
+                    },
+“移动”：{
+"enable"：true，
+“速度”：2，
+"方向"："无"，
+“随机”：false，
+“直”：false，
+"out_mode"："out"，
+"bounce"：false，
+“吸引”：{
+"enable"：false，
+“rotateX”：600，
+“rotateY”：1200
+                        }
+                    }
+                },
+“交互性”：{
+"detect_on"："画布"，
+“事件”：{
+“onHover”：{
+"enable"：true，
+“模式”：“抓取”
+                        },
+“onclick”：{
+"enable"：true，
+“mode”：“push”
+                        },
+“调整大小”：true
+                    },
+“模式”：{
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+          // 创建雪花效果
+            function createSnowflakes() {
+                const container = document.getElementById('snowflakes-container');
+                const snowflakesCount = 50;
+                
+                for (let i = 0; i < snowflakesCount; i++) {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowflake.innerHTML = '❄';
+                    
+                    // 随机位置
+                    snowflake.style.left = Math.random() * 100 + 'vw';
+                    snowflake.style.top = -20 + 'px';
+                    
+                    // 随机大小
+                    const size = Math.random() * 0.8 + 0.4;
+                    snowflake.style.fontSize = size + 'em';
+                    
+                    // 随机透明度
+                    snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+                    
+                    // 随机动画
+                    const duration = Math.random() * 10 + 5;
+                    snowflake.style.animationDuration = duration + 's';
+                    
+                    container.appendChild(snowflake);
+                    
+                    // 雪花落下开始
+                    setTimeout(() => {
+                        snowflake.style.top = -20 + 'px';
+                        snowflake.style.left = Math.random() * 100 + 'vw';
+                    }, duration * 1000);
+                }
+            }
+            
+            createSnowflakes();
+            
+            // 时间显示
+            function updateTime() {
+                const now = new Date();
+                const timeDisplay = document.getElementById('timeDisplay');
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                
+                timeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+            
+            setInterval(updateTime, 1000);
+            updateTime();
+            
+            // 音乐播放
+            const playlist = [
+                { 
+                    title: "电子竞技主题曲", 
+                    src: "music1.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "未来科技音效", 
+                    src: "music2.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "游戏战斗BGM", 
+                    src: "music3.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "游戏战斗BGM", 
+                    src: "music16.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "伤感纯音乐", 
+                    src: "music4.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "樱花泪", 
+                    src: "music5.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "天气之子BGM", 
+                    src: "music6.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "清空BGM", 
+                    src: "music8.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "崩溃的世界。BGM", 
+                    src: "music9.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "daylifhtBGM", 
+                    src: "music10.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "wakeBGM", 
+                    src: "music11.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "樱花树下的约定BGM", 
+                    src: "music12.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "风之谷BGM", 
+                    src: "music13.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "The right path.BGM", 
+                    src: "music14.mp3",
+                    artist: "酷玩音乐团队"
+                },
+                { 
+                    title: "游戏战斗BGM", 
+                    src: "music15.mp3",
+                    artist: "酷玩音乐团队"
+                },
+            ];
+            
+            let currentTrack = 0;
+            let isPlaying = false;
+            const bgMusic = document.getElementById('bgMusic');
+            const musicInfo = document.getElementById('musicInfo');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            function loadTrack(index) {
+                if (index < 0) index = playlist.length - 1;
+                if (index >= playlist.length) index = 0;
+                
+                currentTrack = index;
+                bgMusic.src = playlist[currentTrack].src;
+                bgMusic.load();
+                
+                updateMusicInfo();
+                
+                if (isPlaying) {
+                    bgMusic.play()
+                        .then(_ => {
+                            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        })
+                        .catch(error => {
+                            console.log("自动播放被阻止:", error);
+                        });
+                }
+            }
+            
+            function updateMusicInfo() {
+                const track = playlist[currentTrack];
+                musicInfo.textContent = `${track.title} - ${track.artist} (${currentTrack + 1}/${playlist.length})`;
+            }
+            
+            function togglePlayPause() {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    bgMusic.play()
+                        .then(_ => {
+                            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        })
+                        .catch(error => {
+                            console.log("播放失败:", error);
+                            musicInfo.textContent = "请点击页面任意位置激活音乐播放";
+                        });
+                }
+                isPlaying = !isPlaying;
+            }
+            
+            function playPrevious() {
+                currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+                loadTrack(currentTrack);
+                if (isPlaying) {
+                    bgMusic.play();
+                }
+            }
+            
+            function playNext() {
+                currentTrack = (currentTrack + 1) % playlist.length;
+                loadTrack(currentTrack);
+                if (isPlaying) {
+                    bgMusic.play();
+                }
+            }
+            
+            bgMusic.addEventListener('ended', playNext);
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            prevBtn.addEventListener('click', playPrevious);
+            nextBtn.addEventListener('click', playNext);
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    togglePlayPause();
+                } else if (e.code === 'ArrowRight') {
+                    playNext();
+                } else if (e.code === 'ArrowLeft') {
+                    playPrevious();
+                }
+            });
+            
+            document.body.addEventListener('click', function firstInteraction() {
+                if (!isPlaying) {
+                    togglePlayPause();
+                }
+                document.body.removeEventListener('click', firstInteraction);
+            }, { once: true });
+            
+            loadTrack(0);
+            
+
+
+            // ==================== 客服聊天系统 ====================
+            const customerServiceBtn = document.getElementById('customerServiceBtn');
+            const chatModal = document.getElementById('chatModal');
+            const pairCodeDisplay = document.getElementById('pairCodeDisplay');
+            const pairCodeInput = document.getElementById('pairCodeInput');
+            const connectBtn = document.getElementById('connectBtn');
+            const chatSection = document.getElementById('chatSection');
+            const messageArea = document.getElementById('messageArea');
+            发件人：发件人， messageInput = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+
+            let isCustomerService = false;
+            let pairCode = '';
+            let currentRoom = '';
+            const STORAGE_KEY = 'coolplay_chat_';
+
+            customerServiceBtn.addEventListener('click', function() {
+                chatModal.style.display = 'block';
+                pairCode = Math.floor(100000 + Math.random() * 900000);
+                pairCodeDisplay.textContent = `您的配对码: ${pairCode}`;
+                pairCodeSection.style.display = 'block';
+                chatSection.style.display = 'none';
+                isCustomerService = false;
+                initMessageListener();
+            });
+
+            function initMessageListener() {
+                window.addEventListener('storage', function(e) {
+                    if (e.key === STORAGE_KEY + currentRoom) {
+                        const messages = JSON.parse(e.newValue || '[]');
+                        const lastMsg = messages[messages.length - 1];
+                        if (lastMsg) {
+                            addMessage(lastMsg.sender, lastMsg.text);
+                        }
+                    }
+                });
+            }
+
+            connectBtn.addEventListener('单击', 功能() {
+                Const inputCode=pairCodeInput.价值.修剪();
+                
+                如果 (inputCode==='5201314') {
+                    isCustomerService=正确;
+                    currentRoom='customer_service';
+                    pairCodeDisplay.textContent='客服模式已激活';
+                    pairCodeSection.风格.显示='无';
+                    chatSection.风格.显示='块';
+                    addmessage('系统', '您已进入客服模式，等待用户连接... ');
+                    返回;
+                }
+                
+                如果 (inputCode===pairCode.toString()) {
+                    currentRoom='room_'+pairCode;
+                    pairCodeSection.风格.显示='无';
+                    chatSection.风格.显示='块';
+                    addmessage('系统', '已连接到客服，请开始对话');
+                    
+                    // 模拟通知客服
+                    Const notifyMsg={
+                        发件人: '系统',
+                        文本: `用户已通过配对码${pairCode}连接`,
+                        时间: 日期.现在()
+                    };
+                    localStorage.setitem(
+                        storage_KEY+'customer_service',
+                        JSON.使字符串化([notifyMsg])
+                    );
+localStoragelocalStoragelocalStoragelocalStorage。setitem(storage_KEY+}，数学.随机())；setitem(storage_KEY+'触发器'，数学.随机())；setitem(storage_KEY+'触发器'，数学.随机())；setitem(storage_KEY+'触发器'，数学.随机())；
+}其他{
+警惕的('配对码错误！ ')；
+}
+;
+
+函数SendMessage(){
+=
+||
+
+pairCodeSection。风格.显示='无'；StomerService？'客服'：'用户'；r服务？'客服'：'用户'；isCustomerService？'客服'：'用户'；sender=isCustomerService？'客服'：'用户'；isCustomerService？'客服'：'用户'；sender=isCuConstConstConstConstConstConstConstConstConstConstConstConstConstConstConstConstConstConstConstender=isCustomerService？'客服'：'用户'；sender=isCustomerService？'客服'：'用户'；isCustomerService？'客服'：'用户'；发件人=isCustomome
+=_'+pairCode:currentRoom；isCustomerService？'room_'+pairCode:currentRoom；isCustomerService？'room_'+pairCode:currentRoom；isCustomerService？'room_'+pairCode:currentRoom；
+Const history常量历史常量历史Const history常量历史Const history常量历史Const history常量历史Const histo常量历史Const histo ry常量历史Const history常量历史Const history常量历史=JSON.getitem(STORAGE_KEY+room)||'[]')；JSON.parse(localStorage.getitem(STORAGE_KEY+room)||'[]')；JSON。parse(localStorage.getitem(STORAGE_KEY+room)||'[]')；JSON。parse(localStorage.getitem(STORAGE_KEY+room)||'[]')；JSON。剖析(localStorage。getitem(STORAGE_KEY+room)||'[]')；JSON.剖析(localStorage.getitem(STORAGE_KEY+room)||'[]')；JSON.Parse(localStorage.getitem(S
+"value_area"：800
+.
+发件人：发件人，
+文本：文本，
+.
+;
+"形状"：{
+localStoragelocalStoragelocalStoragelocalStorage。y+房间，JSON.Stringify(历史))；setitem(STORAGE_KEY+room，JSON.Stringify(历史))；setitem(STORAGE_KEY+房间，JSON.stringify(历史))；setitem(STORAGE_KEY+room，JSON.stringify(历史))；setitem(STORAGE_KEY+room，JSON.Stringify(历史))；setitem(STORAGE_KEY+room，JSON.Stringify(历史))；
+localStoragelocalStoragelocalStoragelocalStorage。
+addmessage
+；值=
+}
+
+函数addmessage
+常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement常量msgElement=文档。createElement('div')；document.createElement('div')；文档。createElement('div')；文档。createElement('div')；文档。createElement('div')；文档。createElement('div')；文档。createElement('div')；文档。createElement('div')；
+==
+==
+=
+messageAreamessageAreamessageAreamessageAreamessageAreamessageAreamessageAreamessageArea。appendChild(msgElement)；appendChild(msgElement)；appendChild(msgElement)；appendChild(msgElement)；AppendChild(msgElement)；appendChild(msgElement)；appendChild(msgElement)；appendChild(msgElement)；
+==
+}
+
+sendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsse ndBtnsendBtnsendBtnsendBtnsendBtnsse ndBtnsendBtnsendBtnsendBtnsendBtnsendBtnssendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtnssendBtnsendBtnsendBtnsendBtnsendBtnsendBtnsendBtn.，sendMessage
+messageInputmessageInputmessageInputmessageInputmessageInputmessageInputmessageInputmessageInputmessageInput。addEventListener('keypress'，(e)=>{addEventListener('keypress'，(e)=>{addEventListener('keypress'，(e)=>{
+.
+;
+
+//====================滚动动画效果====================
+常量animateOnScrollConst
+=，.产品展示箱IMG，.联系')；文件。querySelectorAll('.product-description，.产品展示箱IMG，.联系')；文件。querySelectorAll('.product-description，.产品展示箱IMG，.联系')；文件。querySelectorAll('.product-description，.产品展示箱IMG，.联系')；文件。querySelectorAll('.product-description，.产品展示箱IMG，.联系')；文件。querySelectorAll('.product-description，.产品展示箱IMG，.联系')；文件。querySelectorAll('.product-description，.产品展示箱IMG，.联系')；文件。querySelectorAll('.product-description，.产品展示箱IMG，.联系')；
+"enable"：false，
+.
+=undingClientRect().顶端；element.get BoundingClientRect().顶端；element.get BoundingClientRect().顶端；element.get BoundingClientRect().顶端；element.get BoundingClientRect().顶端；
+=
+                    
+<
+=
+.
+}
+;
+;
+“宽度”：1
+文件。querySelectorAll('.product-description，.产品展示IMG，.联系人')文件。querySelectorAll('.product-description，.产品展示IMG，.联系人')文件。querySelectorAll('.product-description，.产品展示IMG，.联系人')文件。querySelectorAll('.product-description，.产品展示箱IMG，.联系')。foreach(元素文件。querySelectorAll('.product-description，.产品展示IMG，.联系人')文件.querySelectorAll('.product-description，.产品展示IMG，.联系人')文件.querySelectorAll('.product-description，.产品展示IMG，.联系人')文件。querySelectorAll('.文件。querySelectorAll文件。querySelectorAll
+=
+=
+==
+;
+“随机”：false，
+windowwindowaddEventListener，animateOnScroll
+animateOnScroll()；
+;
+<
+<
+<
